@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Norauto</title>
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src  'self' https://cdn.jsdelivr.net 'sha256-lfyzEcAn5SXSo09fP1RFkH8IUv7lTbex4IOlTnTHx3E=';
+        script-src-elem 'self' https://cdn.jsdelivr.net 'sha256-lfyzEcAn5SXSo09fP1RFkH8IUv7lTbex4IOlTnTHx3E=';
+        style-src   'self' 'unsafe-inline';
+        img-src     'self' https://s1.medias-norauto.es;
+        connect-src 'self' http://localhost:3000; 
+        form-action 'self';
+    ">
+    <link rel="icon" type="image/webp" href="norauto-favicon-32x32.webp">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .banner {
+            width: 100%;
+            background-color: #012B6F;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .banner2 {
+            width: 100%;
+            background-color: #EBB640;
+            color: #012B6F;
+            padding: 2px 0;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            position: relative; 
+        }
+
+        .banner-logo {
+            position: absolute;
+            top: 50%;
+            left: 110px;
+            transform: translateY(-50%);
+            height: 37px;
+            width: auto;
+        }
+
+        .main-content-wrapper {
+            display: flex;
+            color:#012B6F;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            gap: 40px;
+            flex-wrap: wrap;
+            padding: 20px;
+            width: 100%;
+            max-width: 1100px; 
+            box-sizing: border-box;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            min-width: 320px;
+            max-width: 550px; 
+            box-sizing: border-box;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .form-fields-grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: 1fr 1fr; 
+        }
+
+        #customerForm #phoneMobile,
+        #customerForm #phoneFixed {
+            grid-column: 1 / -1;
+        }
+
+        .form-fields-grid .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 0;
+        }
+
+        .form-fields-grid .form-group label {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .form-fields-grid .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .form-group button[type="submit"] {
+            background-color: #0d6efd;
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .form-group button[type="submit"]:hover {
+            background-color: #0b5ed7;
+        }
+        
+        @media (max-width: 599px) {
+            .form-fields-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .promo-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .promo-card-image-container {
+            position: relative;
+        }
+
+        .promo-card-background-image {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .promo-card-foreground-image {
+            position: absolute;
+            bottom: -20px;
+            left: 20px;
+            width: 120px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border: 2px solid white;
+        }
+        .promo-card-foreground-image img {
+            display: block;
+            width: 100%;
+        }
+
+        .promo-card-content {
+            padding: 20px;
+            padding-top: 35px;
+        }
+
+        .promo-card-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #012B6F;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .promo-card-description {
+            font-size: 0.9em;
+            color: #555;
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 599px) {
+            .banner {
+                display: flex;
+                flex-direction: column; 
+                align-items: center;   
+                gap: 10px;            
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+
+            .banner-logo {
+                position: static;
+                transform: none; 
+                height: 35px;     
+            }
+        }
+
+        .honeypot {
+            position: absolute;
+            left: -5000px; 
+        }
+
+        /* --- NUEVO: Estilos para reordenar en vista móvil --- */
+        @media (max-width: 999px) {
+            .promo-card {
+                order: -1; /* Mueve la tarjeta de promoción al principio */
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <img src="Logo_actuel_de_Norauto.png" alt="Logo de Norauto" class="banner-logo">
+        ¡Date de alta en el Club!
+    </div>
+    <div class="banner2">
+        <p>Recibirás un 5% de dto. de bienvenida, acceso a promociones exclusivas y comunicaciones de novedades.</p>
+    </div>
+
+    <div class="main-content-wrapper">
+        <div class="form-container">
+            <h2>Registro de Usuario</h2>
+            <form id="customerForm" novalidate>
+                <div class="form-group honeypot">
+                    <label for="website">Website</label>
+                    <input type="text" id="website" name="website" autocomplete="off" tabindex="-1">
+                </div>
+                <div class="form-fields-grid">
+                    <div class="form-group">
+                        <label for="firstName">Nombre:</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Apellidos:</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nationalId">DNI / NIE:</label>
+                        <input type="text" id="nationalId" name="nationalId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="birthDate">Fecha de Nacimiento:</label>
+                        <input type="date" id="birthDate" name="birthDate" required min="1890-01-01">
+                    </div>
+                    <div class="form-group">
+                        <label for="postCode">Código Postal:</label>
+                        <input type="text" id="postCode" name="postCode" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="city">Provincia:</label>
+                        <input type="text" id="city" name="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneMobile">Teléfono Móvil:</label>
+                        <input type="tel" id="phoneMobile" name="phoneMobile" required>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="margin-top: 15px; text-align: center;">
+                    <p style="font-size: 12px; color: #666; margin: 0;">
+                        Al hacer clic en "Registrarse", aceptas nuestros 
+                        <a href="https://www.norauto.es/e/politica-proteccion-datos-personales.html" target="_blank" rel="noopener noreferrer" style="color: #0d6efd;">Términos y Condiciones</a> 
+                        y confirmas que recibirás correos electrónicos relacionados con tu cuenta.
+                    </p>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit">Registrarse</button>
+                </div>
+            </form>
+        </div>
+
+        <article class="promo-card">
+            <div class="promo-card-image-container">
+                <picture>
+                    <source media="(max-width: 1200px)" srcset="https://s1.medias-norauto.es/visuals/mobile/es/mi-club-teaser.jpg">
+                    <source media="(min-width: 1200px)" srcset="https://s1.medias-norauto.es/visuals/desktop/es/mi-club-teaser.jpg">
+                    <img src="https://s1.medias-norauto.es/visuals/desktop/es/mi-club-teaser.jpg" alt="Beneficios del Club Norauto" class="promo-card-background-image">
+                </picture>
+                <picture class="promo-card-foreground-image">
+                    <source media="(max-width: 1200px)" srcset="https://s1.medias-norauto.es/visuals/mobile/es/pvverano2024/club/177x100-ecomovilistas-01.jpg">
+                    <source media="(min-width: 1200px)" srcset="https://s1.medias-norauto.es/visuals/desktop/es/pvverano2024/club/177x100-ecomovilistas-01.jpg">
+                    <img src="https://s1.medias-norauto.es/visuals/desktop/es/pvverano2024/club/177x100-ecomovilistas-01.jpg" alt="Logo Ecomovilistas">
+                </picture>
+            </div>
+
+            <div class="promo-card-content">
+                <h3 class="promo-card-title">Programa de fidelización</h3>
+                <p class="promo-card-description">
+                    ✨ <strong>¡Únete al Club y disfruta de beneficios exclusivos!</strong> <br>
+                        Al darte de alta consigues <strong>un 5% de descuento inmediato.</strong><br>
+                        Y además, por ser parte del Club tendrás: <br>
+                        ✅ <strong>10€ de regalo en tu cumpleaños</strong><br>
+                        ✅ <strong>Revisión gratuita</strong> con 15 puntos de control<br>
+                        ✅ <strong>2% en puntos acumulables</strong> en todas tus compras<br>
+                        ✅ <strong>Descuentos especiales en marcas seleccionadas</strong><br>
+                </p>
+            </div>
+        </article>
+        </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" 
+        integrity="sha256-+kMpHtNaVp0Vv0B9iX7tymEm7qv+6ASnck0/uuMeYNA=" 
+        crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const today = new Date();
+          today.setFullYear(today.getFullYear() - 18);
+          const maxDateString = today.toISOString().split('T')[0];
+          document.getElementById('birthDate').max = maxDateString;  
+          const form = document.getElementById('customerForm');
+          if (form) {
+            form.addEventListener('submit', async (e) => {
+              e.preventDefault();
+              if (document.getElementById('website').value !== '') {
+                    return;
+                }
+              const flat_payload = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                nationalId: document.getElementById('nationalId').value,
+                birthDate: document.getElementById('birthDate').value,
+                address1: document.getElementById('address1').value,
+                postCode: document.getElementById('postCode').value,
+                city: document.getElementById('city').value,
+                email: document.getElementById('email').value,
+                phoneMobile: document.getElementById('phoneMobile').value,
+                phoneFixed: document.getElementById('phoneFixed').value
+              };
+    
+              try {
+                // Definir dirección HTTP (URL) del servidor que recibe el payload
+                const response = await fetch('http://localhost:3000/submit', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(flat_payload)
+                });
+    
+                const result = await response.json();
+    
+                if (response.ok) {
+                  Swal.fire({
+                    icon: 'success',
+                    title: '¡Bienvenido!',
+                    text: result.message,
+                    confirmButtonText: 'Ok',
+                    confirmButtonColor: '#012B6F'
+                  });
+                  form.reset(); 
+                } else {
+                  let errorMessage = result.message || 'Ocurrió un error.';
+                  if (result.errors) {
+                      const errorList = result.errors.map(err => `<li>${err.msg}</li>`).join('');
+                      errorMessage = `<ul style="text-align: left; padding-left: 20px;">${errorList}</ul>`;
+                  }
+                  
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error en los datos',
+                    html: errorMessage, 
+                    confirmButtonText: 'Corregir',
+                    confirmButtonColor: '#012B6F'
+                  });
+                }
+              } catch (error) {
+                console.error('Error al enviar el formulario:', error);
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error de Conexión',
+                  text: 'No se pudo conectar con el servidor. Por favor, inténtalo más tarde.',
+                  confirmButtonText: 'Cerrar',
+                  confirmButtonColor: '#012B6F'
+                });
+              }
+            });
+          }
+        });
+    </script>
+
+</body>
+</html>
