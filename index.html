@@ -6,8 +6,8 @@
     <title>Club Norauto</title>
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'self';
-        script-src  'self' https://cdn.jsdelivr.net 'sha256-lfyzEcAn5SXSo09fP1RFkH8IUv7lTbex4IOlTnTHx3E=';
-        script-src-elem 'self' https://cdn.jsdelivr.net 'sha256-lfyzEcAn5SXSo09fP1RFkH8IUv7lTbex4IOlTnTHx3E=';
+        script-src  'self' https://cdn.jsdelivr.net 'sha256-73rO2g7JSErG8isZXCse39Kf5yGuePgjyvot/8cRCNQ=' 'sha256-FuJ17I6RwzrlH8xodQKFj5/2J7etcf8wU7h09ccA4BM=';
+        script-src-elem 'self' https://cdn.jsdelivr.net 'sha256-73rO2g7JSErG8isZXCse39Kf5yGuePgjyvot/8cRCNQ=' 'sha256-FuJ17I6RwzrlH8xodQKFj5/2J7etcf8wU7h09ccA4BM=';
         style-src   'self' 'unsafe-inline';
         img-src     'self' https://s1.medias-norauto.es;
         connect-src 'self' http://localhost:3000; 
@@ -222,11 +222,31 @@
             left: -5000px; 
         }
 
-        /* --- NUEVO: Estilos para reordenar en vista móvil --- */
-        @media (max-width: 999px) {
-            .promo-card {
-                order: -1; /* Mueve la tarjeta de promoción al principio */
-            }
+        .checkbox-group {
+            display: flex; /* Alinea verticalmente la casilla y el texto */
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 10px; /* Espacio entre la casilla y el texto */
+            width: auto; /* Anula el 100% de ancho de otros inputs */
+        }
+
+        .checkbox-group label {
+            font-size: 13px;
+            font-weight: normal; /* El texto no necesita estar en negrita */
+            margin: 0;
+            color: #333;
+        }
+
+        .checkbox-group label a {
+            color: #0d6efd;
+            text-decoration: none;
+        }
+        
+        .checkbox-group label a:hover {
+            text-decoration: underline;
         }
 
     </style>
@@ -275,19 +295,19 @@
                     </div>
                 </div>
                 
-                <div class="form-group" style="margin-top: 15px; text-align: center;">
-                    <p style="font-size: 12px; color: #666; margin: 0;">
-                        Al hacer clic en "Registrarse", aceptas nuestros 
-                        <a href="https://www.norauto.es/e/politica-proteccion-datos-personales.html" target="_blank" rel="noopener noreferrer" style="color: #0d6efd;">Términos y Condiciones</a> 
-                        y confirmas que recibirás correos electrónicos relacionados con tu cuenta.
-                    </p>
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">
+                        <a href="https://s1.medias-norauto.es/visuals/Condiciones_Legales_del_Club_spain.pdf" target="_blank">Acepto las condiciones generales y la política de protección de datos del programa de fidelización.</a>
+                    </label>
                 </div>
-                
+
                 <div class="form-group">
                     <button type="submit">Registrarse</button>
                 </div>
-            </form>
-        </div>
+
+            </form> </div> <article class="promo-card">
+            <div class="promo-card-image-container">
 
         <article class="promo-card">
             <div class="promo-card-image-container">
@@ -297,9 +317,9 @@
                     <img src="https://s1.medias-norauto.es/visuals/desktop/es/mi-club-teaser.jpg" alt="Beneficios del Club Norauto" class="promo-card-background-image">
                 </picture>
                 <picture class="promo-card-foreground-image">
-                    <source media="(max-width: 1200px)" srcset="https://s1.medias-norauto.es/visuals/mobile/es/pvverano2024/club/177x100-ecomovilistas-01.jpg">
-                    <source media="(min-width: 1200px)" srcset="https://s1.medias-norauto.es/visuals/desktop/es/pvverano2024/club/177x100-ecomovilistas-01.jpg">
-                    <img src="https://s1.medias-norauto.es/visuals/desktop/es/pvverano2024/club/177x100-ecomovilistas-01.jpg" alt="Logo Ecomovilistas">
+                    <source media="(max-width: 1200px)" srcset="LOGO-Club-Norauto-ES-white-insert.png">
+                    <source media="(min-width: 1200px)" srcset="LOGO-Club-Norauto-ES-white-insert.png">
+                    <img src="LOGO-Club-Norauto-ES-white-insert.png" alt="Logo Ecomovilistas">
                 </picture>
             </div>
 
@@ -317,8 +337,8 @@
             </div>
         </article>
         </div>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" 
-        integrity="sha256-+kMpHtNaVp0Vv0B9iX7tymEm7qv+6ASnck0/uuMeYNA=" 
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.8/dist/sweetalert2.all.min.js" 
+        integrity="sha256-73rO2g7JSErG8isZXCse39Kf5yGuePgjyvot/8cRCNQ=" 
         crossorigin="anonymous"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -333,6 +353,21 @@
               if (document.getElementById('website').value !== '') {
                     return;
                 }
+
+              // --- LÍNEA AÑADIDA ---
+              const termsCheckbox = document.getElementById('terms');
+
+              // --- VALIDACIÓN AÑADIDA ---
+              if (!termsCheckbox.checked) {
+                  Swal.fire({
+                    icon: 'warning',
+                    title: 'Condiciones no aceptadas',
+                    text: 'Debes aceptar las condiciones generales y la política de protección de datos para continuar.',
+                    confirmButtonText: 'Entendido',
+                    confirmButtonColor: '#012B6F'
+                  });
+                  return; // Detiene el envío del formulario
+              }
               const flat_payload = {
                 firstName: document.getElementById('firstName').value,
                 lastName: document.getElementById('lastName').value,
